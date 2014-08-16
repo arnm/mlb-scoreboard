@@ -1,4 +1,6 @@
-/dist/
+/browser/
 /node_modules/
 /bower_components/
 *.DS_Store
+/mlb-scoreboard.sublime-project
+/mlb-scoreboard.sublime-workspace

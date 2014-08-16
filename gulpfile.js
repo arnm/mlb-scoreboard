@@ -7,18 +7,18 @@ var paths = {
   js: ['./js/**/*.js']
 }
 
-gulp.task('scripts', function() {
+gulp.task('js', function() {
   return browserify()
     .transform(reactify) // transpile JSX
     .add('./js/main.js') // application root
     .bundle()
     .pipe(source('bundle.js')) // desired output filename
-    .pipe(gulp.dest('./dist')); // desired output destination
+    .pipe(gulp.dest('./browser/js')); // desired output destination
 });
 
 // watch for changes and rebuild
 gulp.task('watch', function() {
-  gulp.watch(paths.js, ['scripts']);
+  gulp.watch(paths.js, ['js']);
 })
 
-gulp.task('default', ['watch', 'scripts']);
+gulp.task('default', ['js', 'watch']);

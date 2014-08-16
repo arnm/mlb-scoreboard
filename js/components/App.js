@@ -7,10 +7,9 @@ var BoxScoreList = require('./BoxScoreList');
 
 var App = React.createClass({
 
-  render: function() {
-    return (
-      <BoxScoreList />
-    );
+  render: function () {
+
+    return ( <BoxScoreList /> );
   }
 
 });
