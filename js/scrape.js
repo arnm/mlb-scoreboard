@@ -51,14 +51,32 @@ exports.getGamedayBoxScores = function (gamedayUrl) {
       }).each(function (i) {
         boxscoreUrls[i] = 'http://baseball-reference.com' + $(this).attr('href');
       });
-
       resolve(boxscoreUrls);
     });
   });
 };
 
-exports.getGamedayBoxScoresForDate = function (date) {
-  // test
+exports.getGamedayForDate = function (date) {
+  return new RSVP.Promise(function (resolve, reject) {
+    exports.getSeasonGamedays(date.getFullYear()).then(function (gamedayUrls) {
+      var month = date.getMonth() + 1;
+      if (month < 10) {
+        month = '0' + month;
+      };
+
+      var rs = 'date=' + date.getFullYear() + '-' + month + '-' + date.getUTCDate();
+      var regex = new RegExp(rs);
+
+      var gamedays = gamedayUrls.filter(function (e) {
+        return regex.test(e);
+      });
+
+      if (gamedays.length === 0) {
+        reject(Error('No boxscores for: ' + date.toString()));
+      }
+      resolve(gamedays[0]);
+    });
+  });
 };
 
 exports.getBoxScore = function (boxscoreUrl) {

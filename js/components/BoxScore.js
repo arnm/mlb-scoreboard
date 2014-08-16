@@ -7,7 +7,7 @@ var React = require('react');
 var BoxScore = React.createClass({
   render: function() {
     return (
-      <div>BoxScore</div>
+      <a href={this.props.url}> {this.props.url} </a>
     );
   }
 

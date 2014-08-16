@@ -8,7 +8,13 @@ var BoxScore = require('./BoxScore')
 var BoxScoreList = React.createClass({
 
   render: function () {
-    return ( <BoxScore /> );
+    return (
+      <div>
+        {this.props.urls.map(function (url) {
+          return <BoxScore url={url} />;
+        })}
+      </div>
+    );
   }
 
 });

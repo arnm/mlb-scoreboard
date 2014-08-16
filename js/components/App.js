@@ -11,23 +11,29 @@ var App = React.createClass({
 
   getInitialState: function () {
     return {
-      boxscoreDate: new Date()
+      boxScoreDate: new Date(2014, 7, 15, 0, 0, 0, 0),
+      boxScoreUrls: []
     }
   },
 
-  render: function () {
+  componentDidMount: function () {
+    this.updateBoxScoreUrls();
+  },
 
-    scrape.getSeasonGamedays(new Date().getFullYear()).then(function (gamedayUrls) {
-      return scrape.getGamedayBoxScores(gamedayUrls[0]);
-    }).then(function (boxscoreUrls) {
-      return scrape.getBoxScore(boxscoreUrls[0]);
-    }).then(function (res) {
-      console.log(res);
+  updateBoxScoreUrls: function() {
+    var self = this;
+    scrape.getGamedayForDate(self.state.boxScoreDate).then(function (gameday) {
+      return scrape.getGamedayBoxScores(gameday);
+    }).then(function (boxScoreUrls) {
+      self.setState({boxScoreUrls: boxScoreUrls});
+      console.log(self.state.boxScoreUrls);
     }).catch(function (error) {
-      alert(error);
+      console.log(error);
     });
+  },
 
-    return ( <BoxScoreList /> );
+  render: function () {
+    return ( <BoxScoreList urls={this.state.boxScoreUrls} /> );
   }
 
 });
