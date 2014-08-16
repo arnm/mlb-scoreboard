@@ -23,36 +23,49 @@ exports.get = function (url) {
 exports.getSeasonGamedays = function (season) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.get('http://www.baseball-reference.com/boxes/' + season + '.shtml').then(function (response) {
-      var gamedays = [];
+      var gamedayUrls = [];
       var $ = Cheerio.load(response);
       var regex = new RegExp('^/play-index*');
 
       $('td > a').filter(function () {
         return regex.test($(this).attr('href'));
       }).each(function (i, e) {
-        gamedays[i] = 'http://www.baseball-reference.com' + $(this).attr('href');
+        gamedayUrls[i] = 'http://www.baseball-reference.com' + $(this).attr('href');
       });
 
-      resolve(gamedays);
+      resolve(gamedayUrls);
     });
 
   });
 };
 
-exports.getGamedayBoxScores = function (gameday) {
+exports.getGamedayBoxScores = function (gamedayUrl) {
   return new RSVP.Promise(function (resolve, reject) {
-    exports.get(gameday).then(function (response) {
-      var boxscores = [];
+    exports.get(gamedayUrl).then(function (response) {
+      var boxscoreUrls = [];
       var $ = Cheerio.load(response);
       var regex = new RegExp('^/boxes/*')
 
       $('pre > a').filter(function () {
         return regex.test($(this).attr('href'));
       }).each(function (i) {
-        boxscores[i] = 'http://baseball-reference.com' + $(this).attr('href');
+        boxscoreUrls[i] = 'http://baseball-reference.com' + $(this).attr('href');
       });
 
-      resolve(boxscores);
+      resolve(boxscoreUrls);
+    });
+  });
+};
+
+exports.getGamedayBoxScoresForDate = function (date) {
+  // test
+};
+
+exports.getBoxScore = function (boxscoreUrl) {
+  return new RSVP.Promise(function (resolve, reject) {
+    exports.get(boxscoreUrl).then(function (response) {
+      var $ = Cheerio.load(response);
+      resolve($('#linescore').text());
     });
   });
 };
