@@ -1,6 +1,8 @@
 var RSVP = require('rsvp');
 var Cheerio = require('cheerio');
 
+var BASE_URL = 'http://baseball-reference.com';
+
 // promise -> if request returns 200 resolve the response
 exports.get = function (url) {
   return new RSVP.Promise(function (resolve, reject) {
@@ -24,15 +26,15 @@ exports.get = function (url) {
 // promise -> array of gameday urls for the season
 exports.getSeasonGamedays = function (season) {
   return new RSVP.Promise(function (resolve, reject) {
-    exports.get('http://www.baseball-reference.com/boxes/' + season + '.shtml').then(function (response) {
+    exports.get(BASE_URL + '/boxes/' + season + '.shtml').then(function (response) {
       var gamedayUrls = [];
-      var $ = Cheerio.load(response);
+      var C = Cheerio.load(response);
       var regex = new RegExp('^/play-index*');
 
-      $('td > a').filter(function () {
-        return regex.test($(this).attr('href'));
+      C('td > a').filter(function () {
+        return regex.test(C(this).attr('href'));
       }).each(function (i, e) {
-        gamedayUrls[i] = 'http://www.baseball-reference.com' + $(this).attr('href');
+        gamedayUrls[i] = BASE_URL + C(this).attr('href');
       });
 
       resolve(gamedayUrls);
@@ -46,13 +48,13 @@ exports.getGamedayBoxScores = function (gamedayUrl) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.get(gamedayUrl).then(function (response) {
       var boxscoreUrls = [];
-      var $ = Cheerio.load(response);
+      var C = Cheerio.load(response);
       var regex = new RegExp('^/boxes/*')
 
-      $('pre > a').filter(function () {
-        return regex.test($(this).attr('href'));
+      C('pre > a').filter(function () {
+        return regex.test(C(this).attr('href'));
       }).each(function (i) {
-        boxscoreUrls[i] = 'http://baseball-reference.com' + $(this).attr('href');
+        boxscoreUrls[i] = BASE_URL + C(this).attr('href');
       });
       resolve(boxscoreUrls);
     });
@@ -89,9 +91,9 @@ exports.getGamedayForDate = function (date) {
 exports.getBoxScore = function (boxscoreUrl) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.get(boxscoreUrl).then(function (response) {
-      var $ = Cheerio.load(response);
+      var C = Cheerio.load(response);
       // remove innings and dashes and extra whitespace
-      var lineScoreText = $('#linescore').text().replace(/\s+/g, ' ').trim();
+      var lineScoreText = C('#linescore').text().replace(/\s+/g, ' ').trim();
       var lines = lineScoreText.match(/\d(\d|\s)+/g).map(function (s) {
         return s.trim();
       });
@@ -106,15 +108,22 @@ exports.getBoxScore = function (boxscoreUrl) {
       var awayTeam = lineScoreText.match(/(-\s+)([a-z]\D+)(\s)/i)[2];
       var homeTeam = lineScoreText.match(/\D+\s/g)[1];
 
+      var teamLinks = [];
+      C('#linescore > strong > a').each(function (i) {
+        teamLinks[i] = BASE_URL + C(this).attr('href');
+      });
+
       var boxScore = {
         header: header,
-        home: {
-          name: homeTeam,
-          line: homeLine
-        },
         away: {
           name: awayTeam,
+          teamLink: teamLinks[0],
           line: awayLine
+        },
+        home: {
+          name: homeTeam,
+          teamLink: teamLinks[1],
+          line: homeLine
         }
       };
       resolve(boxScore);

@@ -18,6 +18,7 @@ var App = React.createClass({
 
   componentDidMount: function () {
     this.updateBoxScoreUrls();
+    $('#datepicker').datepicker({});
   },
 
   updateBoxScoreUrls: function() {
@@ -32,7 +33,12 @@ var App = React.createClass({
   },
 
   render: function () {
-    return ( <BoxScoreList urls={this.state.boxScoreUrls} /> );
+    return (
+      <div>
+        <input id="datepicker" type="text" className="form-control"></input>
+        <BoxScoreList urls={this.state.boxScoreUrls} />
+      </div>
+    );
   }
 
 });

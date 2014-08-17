@@ -49,13 +49,13 @@ var BoxScore = React.createClass({
           </thead>
           <tbody>
             <tr>
-              <td>{this.state.boxScore['away']['name']}</td>
+              <td><a href={this.state.boxScore['away']['teamLink']}>{this.state.boxScore['away']['name']}</a></td>
               {this.state.boxScore['away']['line'].map(function (data) {
                 return <td>{data}</td>;
               })}
             </tr>
             <tr>
-              <td>{this.state.boxScore['home']['name']}</td>
+              <td><a href={this.state.boxScore['home']['teamLink']}>{this.state.boxScore['home']['name']}</a></td>
               {this.state.boxScore['home']['line'].map(function (data) {
                 return <td>{data}</td>;
               })}
