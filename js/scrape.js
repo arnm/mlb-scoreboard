@@ -91,8 +91,10 @@ exports.getBoxScore = function (boxscoreUrl) {
     exports.get(boxscoreUrl).then(function (response) {
       var $ = Cheerio.load(response);
       // remove innings and dashes and extra whitespace
-      var lineScoreText = $('#linescore').text().replace(/\s+/g, ' ');
-      var lines = lineScoreText.match(/\d(\d|\s)+/g);
+      var lineScoreText = $('#linescore').text().replace(/\s+/g, ' ').trim();
+      var lines = lineScoreText.match(/\d(\d|\s)+/g).map(function (s) {
+        return s.trim();
+      });
 
       // create box score header
       var header = lines[0].split(' ');
@@ -102,7 +104,7 @@ exports.getBoxScore = function (boxscoreUrl) {
       var awayLine = lines[1].split(' ');
       var homeLine = lineScoreText.split(' ').slice(-awayLine.length);
       var awayTeam = lineScoreText.match(/(-\s+)([a-z]\D+)(\s)/i)[2];
-      var homeTeam = lineScoreText.match(/\D+\s/g)[1].trim();
+      var homeTeam = lineScoreText.match(/\D+\s/g)[1];
 
       var boxScore = {
         header: header,

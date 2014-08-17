@@ -30,13 +30,15 @@ var BoxScore = React.createClass({
   updateBoxScore: function () {
     var self = this;
     scrape.getBoxScore(self.props.url).then(function (boxScore) {
-      self.setState({boxScore: boxScore});
+      self.setState({
+        boxScore: boxScore
+      });
     });
   },
 
   render: function() {
     return (
-        <table>
+        <table className='table table-bordered table-striped'>
           <thead>
             <tr>
               <th>Team</th>

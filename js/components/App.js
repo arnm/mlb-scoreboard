@@ -11,7 +11,7 @@ var App = React.createClass({
 
   getInitialState: function () {
     return {
-      boxScoreDate: new Date(2014, 7, 15, 0, 0, 0, 0),
+      boxScoreDate: new Date(2014, 7, 16, 0, 0, 0, 0),
       boxScoreUrls: []
     }
   },
