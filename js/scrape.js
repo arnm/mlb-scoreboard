@@ -1,6 +1,7 @@
 var RSVP = require('rsvp');
 var Cheerio = require('cheerio');
 
+// promise -> if request returns 200 resolve the response
 exports.get = function (url) {
   return new RSVP.Promise(function (resolve, reject) {
     var req = new XMLHttpRequest();
@@ -20,6 +21,7 @@ exports.get = function (url) {
   });
 };
 
+// promise -> array of gameday urls for the season
 exports.getSeasonGamedays = function (season) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.get('http://www.baseball-reference.com/boxes/' + season + '.shtml').then(function (response) {
@@ -39,6 +41,7 @@ exports.getSeasonGamedays = function (season) {
   });
 };
 
+// promise -> array of box score urls for gameday
 exports.getGamedayBoxScores = function (gamedayUrl) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.get(gamedayUrl).then(function (response) {
@@ -56,10 +59,13 @@ exports.getGamedayBoxScores = function (gamedayUrl) {
   });
 };
 
+// promise -> gameday url for the specified date, is null if no gameday on date
 exports.getGamedayForDate = function (date) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.getSeasonGamedays(date.getFullYear()).then(function (gamedayUrls) {
-      var month = date.getMonth() + 1;
+
+      var month = date.getMonth() + 1; // Date months are 0 - 11 for some reason
+      // match required format
       if (month < 10) {
         month = '0' + month;
       };
@@ -79,11 +85,37 @@ exports.getGamedayForDate = function (date) {
   });
 };
 
+// promise -> map representing a game box score
 exports.getBoxScore = function (boxscoreUrl) {
   return new RSVP.Promise(function (resolve, reject) {
     exports.get(boxscoreUrl).then(function (response) {
       var $ = Cheerio.load(response);
-      resolve($('#linescore').text());
+      // remove innings and dashes and extra whitespace
+      var lineScoreText = $('#linescore').text().replace(/\s+/g, ' ');
+      var lines = lineScoreText.match(/\d(\d|\s)+/g);
+
+      // create box score header
+      var header = lines[0].split(' ');
+      ['R', 'H', 'E'].map(function (e) {
+        header.push(e);
+      });
+      var awayLine = lines[1].split(' ');
+      var homeLine = lines[2].split(' ');
+      var awayTeam = lineScoreText.match(/(-\s+)([a-z]\D+)(\s)/i)[2];
+      var homeTeam = lineScoreText.match(/\D+\s/g)[1].trim();
+
+      var boxScore = {
+        header: header,
+        home: {
+          name: homeTeam,
+          line: homeLine
+        },
+        away: {
+          name: awayTeam,
+          line: awayLine
+        }
+      };
+      resolve(boxScore);
     });
   });
 };

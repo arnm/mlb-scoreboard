@@ -26,7 +26,6 @@ var App = React.createClass({
       return scrape.getGamedayBoxScores(gameday);
     }).then(function (boxScoreUrls) {
       self.setState({boxScoreUrls: boxScoreUrls});
-      console.log(self.state.boxScoreUrls);
     }).catch(function (error) {
       console.log(error);
     });
