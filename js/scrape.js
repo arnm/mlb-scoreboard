@@ -100,7 +100,7 @@ exports.getBoxScore = function (boxscoreUrl) {
         header.push(e);
       });
       var awayLine = lines[1].split(' ');
-      var homeLine = lines[2].split(' ');
+      var homeLine = lineScoreText.split(' ').slice(-awayLine.length);
       var awayTeam = lineScoreText.match(/(-\s+)([a-z]\D+)(\s)/i)[2];
       var homeTeam = lineScoreText.match(/\D+\s/g)[1].trim();
 
