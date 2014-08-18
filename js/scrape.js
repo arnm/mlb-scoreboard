@@ -70,9 +70,14 @@ exports.getGamedayForDate = function (date) {
       // match required format
       if (month < 10) {
         month = '0' + month;
-      };
+      }
 
-      var rs = 'date=' + date.getFullYear() + '-' + month + '-' + date.getUTCDate();
+      var day = date.getUTCDate();
+      if (day < 10) {
+        day = '0' + day;
+      }
+
+      var rs = 'date=' + date.getFullYear() + '-' + month + '-' + day;
       var regex = new RegExp(rs);
 
       var gamedays = gamedayUrls.filter(function (e) {

@@ -11,14 +11,27 @@ var App = React.createClass({
 
   getInitialState: function () {
     return {
-      boxScoreDate: new Date(2014, 7, 16, 0, 0, 0, 0),
+      boxScoreDate: new Date('2014-08-04'),
       boxScoreUrls: []
     }
   },
 
-  componentDidMount: function () {
+  componentWillMount: function () {
     this.updateBoxScoreUrls();
-    $('#datepicker').datepicker({});
+  },
+
+  componentDidMount: function () {
+    this.initializeDatePicker();
+  },
+
+  updateBoxScoreDate: function (changeDateEvent) {
+    this.setState({boxScoreDate: changeDateEvent.date});
+    this.updateBoxScoreUrls();
+  },
+
+  initializeDatePicker: function () {
+    $('#datepicker').datepicker('setUTCDate', this.state.boxScoreDate);
+    $('#datepicker').datepicker().on('changeDate', this.updateBoxScoreDate);
   },
 
   updateBoxScoreUrls: function() {
@@ -26,7 +39,9 @@ var App = React.createClass({
     scrape.getGamedayForDate(self.state.boxScoreDate).then(function (gameday) {
       return scrape.getGamedayBoxScores(gameday);
     }).then(function (boxScoreUrls) {
+      console.log('Before: ' + self.state.boxScoreUrls);
       self.setState({boxScoreUrls: boxScoreUrls});
+      console.log('After: ' + self.state.boxScoreUrls);
     }).catch(function (error) {
       console.log(error);
     });
@@ -35,7 +50,7 @@ var App = React.createClass({
   render: function () {
     return (
       <div>
-        <input id="datepicker" type="text" className="form-control"></input>
+        <input id="datepicker" className="form-control" />
         <BoxScoreList urls={this.state.boxScoreUrls} />
       </div>
     );
