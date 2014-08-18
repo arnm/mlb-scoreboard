@@ -6,37 +6,31 @@ var scrape = require('../scrape');
 var Scoreboard = React.createClass({
 
   getInitialState: function () {
-    console.log('Initial State');
     return {
-      boxScoreDate: new Date('2014-08-04'),
+      boxScoreDate: new Date(),
       boxScoreUrls: null
     };
   },
 
   componentWillMount: function () {
-    console.log('Will Mount');
     this.updateBoxScoreUrls();
   },
 
   componentDidMount: function () {
-    console.log('Did Mount');
     this.initializeDatePicker();
   },
 
   updateBoxScoreDate: function (changeDateEvent) {
-    console.log('Update BoxScore Date');
     this.setState({boxScoreDate: changeDateEvent.date});
     this.updateBoxScoreUrls();
   },
 
   initializeDatePicker: function () {
-    console.log('Initialize Picker');
     $('#datepicker').datepicker('setUTCDate', this.state.boxScoreDate);
     $('#datepicker').datepicker().on('changeDate', this.updateBoxScoreDate);
   },
 
   updateBoxScoreUrls: function () {
-    console.log('Update BoxScore urls');
     var self = this;
     scrape.getGamedayForDate(self.state.boxScoreDate).then(function (gameday) {
       return scrape.getGamedayBoxScores(gameday);
@@ -45,6 +39,7 @@ var Scoreboard = React.createClass({
         boxScoreUrls: boxScoreUrls
       });
     }).catch(function (error) {
+      console.log(error);
       self.setState({
         boxScoreUrls: []
       });
@@ -52,10 +47,16 @@ var Scoreboard = React.createClass({
   },
 
   render: function () {
-    console.log('Render');
     return (
       <div>
-        <input id="datepicker" className="form-control" />
+        <br />
+        <div id="datepicker" className="input-group date">
+          <input type="text" className="form-control" disabled/>
+            <span className="input-group-addon">
+              <i className="glyphicon glyphicon-th"></i>
+            </span>
+        </div>
+        <br />
         { !this.state.boxScoreUrls ?
           <h1 className='text-center'>Loading...</h1> :
           <BoxScoreList key={this.state.boxScoreUrls} urls={this.state.boxScoreUrls} />
