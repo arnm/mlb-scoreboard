@@ -26,8 +26,8 @@ var BoxScore = React.createClass({
     var boxScore = this.state.boxScore;
     if(!boxScore){
       return (
-        <h3 className="text-center">
-          <span className="glyphicon glyphicon-refresh spin"></span>
+        <h3 className='text-center'>
+          <span className='glyphicon glyphicon-refresh spin'></span>
         </h3>
       );
     }
@@ -43,13 +43,13 @@ var BoxScore = React.createClass({
           </thead>
           <tbody>
             <tr>
-              <td><a href={boxScore.away.teamLink}>{boxScore.away.name}</a></td>
+              <td><a target='_blank' href={boxScore.away.teamLink}>{boxScore.away.name}</a></td>
               {boxScore.away.line.map(function (data) {
                 return <td>{data}</td>;
               })}
             </tr>
             <tr>
-              <td><a href={boxScore.home.teamLink}>{boxScore.home.name}</a></td>
+              <td><a target='_blank' href={boxScore.home.teamLink}>{boxScore.home.name}</a></td>
               {boxScore.home.line.map(function (data) {
                 return <td>{data}</td>;
               })}

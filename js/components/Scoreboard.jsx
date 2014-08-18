@@ -1,4 +1,5 @@
 var React = require('react');
+var M = require('moment');
 
 var BoxScoreList = require('./BoxScoreList.jsx');
 var scrape = require('../scrape');
@@ -7,7 +8,7 @@ var Scoreboard = React.createClass({
 
   getInitialState: function () {
     return {
-      boxScoreDate: new Date(),
+      boxScoreDate: M(new Date()).subtract(1, 'days').toDate(),
       boxScoreUrls: null
     };
   },
@@ -49,21 +50,34 @@ var Scoreboard = React.createClass({
   render: function () {
     return (
       <div>
-        <br />
-        <div id="datepicker" className="input-group date">
-          <input type="text" className="form-control" disabled/>
-            <span className="input-group-addon">
-              <i className="glyphicon glyphicon-th"></i>
-            </span>
+
+        <div className='text-center'>
+          <h2>{M(this.state.boxScoreDate).format('dddd, MMMM Do, YYYY')}</h2>
         </div>
+
+        <div className="row">
+          <div className='col-xs-6 col-xs-push-3 col-md-6 col-md-push-3'>
+            <div id='datepicker' className='input-group date'>
+              <input type="text" className='form-control'/>
+              <span className='input-group-addon'>
+                <i className='glyphicon glyphicon-th'></i>
+              </span>
+            </div>
+          </div>
+        </div>
+
         <br />
-        { !this.state.boxScoreUrls ?
-          <h1 className="text-center">
-            <span className="glyphicon glyphicon-refresh spin"></span>
+
+        {
+          !this.state.boxScoreUrls ?
+          <h1 className='text-center'>
+            <span className='glyphicon glyphicon-refresh spin'></span>
           </h1> :
           <BoxScoreList key={this.state.boxScoreUrls} urls={this.state.boxScoreUrls} />
         }
+
       </div>
+
     );
   }
 
