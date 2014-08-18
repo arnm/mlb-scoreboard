@@ -1,19 +1,15 @@
-/**
- * @jsx React.DOM
- */
-
 var React = require('react');
 
-var BoxScoreList = require('./BoxScoreList');
+var BoxScoreList = require('./BoxScoreList.jsx');
 var scrape = require('../scrape');
 
-var App = React.createClass({
+var Scoreboard = React.createClass({
 
   getInitialState: function () {
     return {
       boxScoreDate: new Date('2014-08-04'),
-      boxScoreUrls: []
-    }
+      boxScoreUrls: null
+    };
   },
 
   componentWillMount: function () {
@@ -51,11 +47,14 @@ var App = React.createClass({
     return (
       <div>
         <input id="datepicker" className="form-control" />
-        <BoxScoreList urls={this.state.boxScoreUrls} />
+        { !this.state.boxScoreUrls ?
+          <h1 className='text-center'>Loading...</h1> :
+          <BoxScoreList urls={this.state.boxScoreUrls} />
+        }
       </div>
     );
   }
 
 });
 
-module.exports = App;
+module.exports = Scoreboard ;

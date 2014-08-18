@@ -1,7 +1,3 @@
-/**
- * @jsx React.DOM
- */
-
 var React = require('react');
 var scrape = require('../scrape');
 
@@ -9,17 +5,7 @@ var BoxScore = React.createClass({
 
   getInitialState: function () {
     return {
-      boxScore: {
-        header: [],
-        home: {
-          name: '',
-          line: []
-        },
-        away: {
-          name: '',
-          line: []
-        }
-      }
+      boxScore: null
     };
   },
 
@@ -38,6 +24,9 @@ var BoxScore = React.createClass({
 
   render: function() {
     var boxScore = this.state.boxScore;
+    if(!boxScore){
+      return <h3 className='text-center'>Loading...</h3>;
+    }
     return (
         <table className='table table-bordered table-striped'>
           <thead>

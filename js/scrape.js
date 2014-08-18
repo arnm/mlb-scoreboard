@@ -19,7 +19,7 @@ exports.get = function (url) {
           reject(Error(req.statusText));
         }
       }
-    };
+    }
   });
 };
 
@@ -49,7 +49,7 @@ exports.getGamedayBoxScores = function (gamedayUrl) {
     exports.get(gamedayUrl).then(function (response) {
       var boxscoreUrls = [];
       var C = Cheerio.load(response);
-      var regex = new RegExp('^/boxes/*')
+      var regex = new RegExp('^/boxes/*');
 
       C('pre > a').filter(function () {
         return regex.test(C(this).attr('href'));
