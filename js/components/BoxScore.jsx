@@ -25,7 +25,11 @@ var BoxScore = React.createClass({
   render: function() {
     var boxScore = this.state.boxScore;
     if(!boxScore){
-      return <h3 className='text-center'>Loading...</h3>;
+      return (
+        <h3 className="text-center">
+          <span className="glyphicon glyphicon-refresh spin"></span>
+        </h3>
+      );
     }
     return (
         <table key={this.state.boxScore} className='table table-bordered table-striped'>

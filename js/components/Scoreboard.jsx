@@ -58,7 +58,9 @@ var Scoreboard = React.createClass({
         </div>
         <br />
         { !this.state.boxScoreUrls ?
-          <h1 className='text-center'>Loading...</h1> :
+          <h1 className="text-center">
+            <span className="glyphicon glyphicon-refresh spin"></span>
+          </h1> :
           <BoxScoreList key={this.state.boxScoreUrls} urls={this.state.boxScoreUrls} />
         }
       </div>
