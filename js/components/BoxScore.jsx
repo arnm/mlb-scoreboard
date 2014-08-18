@@ -28,7 +28,7 @@ var BoxScore = React.createClass({
       return <h3 className='text-center'>Loading...</h3>;
     }
     return (
-        <table className='table table-bordered table-striped'>
+        <table key={this.state.boxScore} className='table table-bordered table-striped'>
           <thead>
             <tr>
               <th>Team</th>
