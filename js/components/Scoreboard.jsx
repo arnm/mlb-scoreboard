@@ -1,4 +1,8 @@
 var React = require('react');
+var Glyphicon = require('react-bootstrap/Glyphicon');
+var Row = require('react-bootstrap/Row');
+var Col = require('react-bootstrap/Col');
+
 var M = require('moment');
 
 var BoxScoreList = require('./BoxScoreList.jsx');
@@ -48,39 +52,44 @@ var Scoreboard = React.createClass({
   },
 
   render: function () {
-    return (
-      <div>
+     // ensure date picker calendar is hidden after date change
+    $('#datepicker').datepicker('hide');
 
-        <div className='text-center'>
-          <h3>{M(this.state.boxScoreDate).format('dddd, MMMM Do, YYYY')}</h3>
-        </div>
+    var dateString = M(this.state.boxScoreDate).format('dddd, MMMM Do, YYYY');
 
-        <div className="row">
-          <div className='col-xs-6 col-xs-push-3 col-md-6 col-md-push-3'>
-            <div id='datepicker' className='input-group date'>
-              <input type="text" className='form-control'/>
-              <span className='input-group-addon'>
-                <i className='glyphicon glyphicon-th'></i>
-              </span>
-            </div>
+    var datePicker =
+      <Row>
+        <Col xs={8} xsPush={2} md={8} mdPush={2}>
+          {/* Need fine grain control for datepicker to work */}
+          <div id='datepicker' className='input-group date'>
+            <input type="text"
+              className='form-control'
+              value={dateString}
+              disabled/>
+            <span className='input-group-addon'>
+              <Glyphicon glyph='th' />
+            </span>
           </div>
-        </div>
+        </Col>
+      </Row>;
 
-        <br />
+    var boxScoreList =
+      !this.state.boxScoreUrls ?
+      <h1 className='text-center'>
+        <Glyphicon glyph='refresh' className='spin' />
+      </h1> :
+      <BoxScoreList
+        key={this.state.boxScoreUrls}
+        urls={this.state.boxScoreUrls}/>;
 
-        {
-          !this.state.boxScoreUrls ?
-          <h1 className='text-center'>
-            <span className='glyphicon glyphicon-refresh spin'></span>
-          </h1> :
-          <BoxScoreList key={this.state.boxScoreUrls} urls={this.state.boxScoreUrls} />
-        }
-
+    return (
+      <div className='top-buffer'>
+        {datePicker}
+        {boxScoreList}
       </div>
-
     );
-  }
 
+  }
 });
 
 module.exports = Scoreboard ;

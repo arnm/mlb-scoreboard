@@ -6,7 +6,8 @@
   "version": "0.0",
 
   "permissions": [
-    "http://*/*"
+    "http://*/*",
+    "https://*/*"
   ],
 
   "browser_action": {

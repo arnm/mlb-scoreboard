@@ -1,10 +1,8 @@
 var React = require('react');
-var Scoreboard = require('./components/Scoreboard.jsx');
+var ScoreboardApp = require('./components/ScoreboardApp.jsx');
 
 window.onload = function () {
   React.renderComponent(
-    <div>
-      <Scoreboard />
-    </div>,
+    <ScoreboardApp />,
     document.getElementById('app'));
 };

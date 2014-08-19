@@ -3,6 +3,18 @@ html body {
   height: 596px;
 }
 
+.top-buffer {
+  margin-top: 20px;
+}
+
+.bottom-buffer {
+  margin-bottom: 10px;
+}
+
+.horizontal-buffer {
+  margin: 5px 5px;
+}
+
 .table td {
   text-align: center;
 }
