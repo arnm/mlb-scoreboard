@@ -8,7 +8,7 @@ var Scoreboard = React.createClass({
 
   getInitialState: function () {
     return {
-      boxScoreDate: M(new Date()).subtract(1, 'days').toDate(),
+      boxScoreDate: M().subtract(1, 'days').toDate(),
       boxScoreUrls: null
     };
   },
@@ -27,7 +27,7 @@ var Scoreboard = React.createClass({
   },
 
   initializeDatePicker: function () {
-    $('#datepicker').datepicker('setUTCDate', this.state.boxScoreDate);
+    $('#datepicker').datepicker('setDate', this.state.boxScoreDate);
     $('#datepicker').datepicker().on('changeDate', this.updateBoxScoreDate);
   },
 

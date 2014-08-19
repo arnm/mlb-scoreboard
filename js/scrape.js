@@ -72,7 +72,7 @@ exports.getGamedayForDate = function (date) {
         month = '0' + month;
       }
 
-      var day = date.getUTCDate();
+      var day = date.getDate();
       if (day < 10) {
         day = '0' + day;
       }
