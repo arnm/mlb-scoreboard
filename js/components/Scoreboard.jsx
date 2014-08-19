@@ -52,7 +52,7 @@ var Scoreboard = React.createClass({
       <div>
 
         <div className='text-center'>
-          <h2>{M(this.state.boxScoreDate).format('dddd, MMMM Do, YYYY')}</h2>
+          <h3>{M(this.state.boxScoreDate).format('dddd, MMMM Do, YYYY')}</h3>
         </div>
 
         <div className="row">

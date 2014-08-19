@@ -32,27 +32,33 @@ var BoxScore = React.createClass({
       );
     }
     return (
-        <table key={this.state.boxScore} className='table table-bordered table-striped'>
+        <table key={this.state.boxScore} className='table table-striped'>
           <thead>
             <tr>
-              <th>Team</th>
-              {boxScore.header.map(function (header) {
-                return <th>{header}</th>;
-              })}
+              <th></th>
+              {
+                boxScore.header.map(function (header) {
+                  return <th>{header}</th>;
+                })
+              }
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><a target='_blank' href={boxScore.away.teamLink}>{boxScore.away.name}</a></td>
-              {boxScore.away.line.map(function (data) {
-                return <td>{data}</td>;
-              })}
+              {
+                boxScore.away.line.map(function (data) {
+                  return <td>{data}</td>;
+                })
+              }
             </tr>
             <tr>
               <td><a target='_blank' href={boxScore.home.teamLink}>{boxScore.home.name}</a></td>
-              {boxScore.home.line.map(function (data) {
-                return <td>{data}</td>;
-              })}
+              {
+                boxScore.home.line.map(function (data) {
+                  return <td>{data}</td>;
+                })
+              }
             </tr>
           </tbody>
         </table>

@@ -1,5 +1,5 @@
 html body {
-  width: 447px;
+  min-width: 447px;
   height: 596px;
 }
 
