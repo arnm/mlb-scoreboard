@@ -1,4 +1,5 @@
 var React = require('react');
+var M = require('moment');
 var Grid = require('react-bootstrap/Grid');
 var Glyphicon = require('react-bootstrap/Glyphicon');
 var Row = require('react-bootstrap/Row');
@@ -16,7 +17,7 @@ var ScoreboardApp = React.createClass({
         <Col>
           <div>
             <Glyphicon glyph='copyright-mark'/>
-            <span className='horizontal-buffer'>2014</span>
+            <span className='text-horizontal-buffer'>{M().toDate().getFullYear()}</span>
             <a target='_blank' href='http://alexeinunez.com'>Alexei Nunez</a>
           </div>
         </Col>
@@ -36,6 +37,7 @@ var ScoreboardApp = React.createClass({
     return (
       <Grid>
         <Scoreboard />
+        <div className='horizontal-divider bottom-buffer'></div>
         {footer}
       </Grid>
     );

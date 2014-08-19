@@ -37,6 +37,12 @@ var BoxScore = React.createClass({
       );
     }
 
+    var gameDetails =
+      <div className='text-detail'>
+        <div>Attendance: {boxScore.attendance}</div>
+        <div>Duration: {boxScore.duration}</div>
+      </div>;
+
     var boxScoreTable =
       <Table striped condensed>
         <thead>
@@ -51,7 +57,12 @@ var BoxScore = React.createClass({
         </thead>
         <tbody>
           <tr>
-            <td><a target='_blank' href={boxScore.away.teamLink}>{boxScore.away.name}</a></td>
+            <td>
+              <a target='_blank' href={boxScore.away.teamLink}>
+                {boxScore.away.name}
+              </a>
+              <div className='text-detail'>({boxScore.away.record})</div>
+            </td>
             {
               boxScore.away.line.map(function (data) {
                 return <td>{data}</td>;
@@ -59,7 +70,12 @@ var BoxScore = React.createClass({
             }
           </tr>
           <tr>
-            <td><a target='_blank' href={boxScore.home.teamLink}>{boxScore.home.name}</a></td>
+            <td>
+              <a target='_blank' href={boxScore.home.teamLink}>
+                {boxScore.home.name}
+              </a>
+              <div className='text-detail'>({boxScore.home.record})</div>
+            </td>
             {
               boxScore.home.line.map(function (data) {
                 return <td>{data}</td>;
@@ -74,6 +90,7 @@ var BoxScore = React.createClass({
 
     return (
       <Panel footer={boxScoreTableFooter}>
+        {gameDetails}
         {boxScoreTable}
       </Panel>
     );

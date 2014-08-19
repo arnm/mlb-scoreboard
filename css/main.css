@@ -3,6 +3,10 @@ html body {
   height: 596px;
 }
 
+.text-detail {
+  color: #aaa;
+}
+
 .top-buffer {
   margin-top: 20px;
 }
@@ -11,8 +15,14 @@ html body {
   margin-bottom: 10px;
 }
 
-.horizontal-buffer {
-  margin: 5px 5px;
+.text-horizontal-buffer {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.horizontal-divider {
+  border-top: 1px solid;
+  border-color: #ddd;
 }
 
 .table td {

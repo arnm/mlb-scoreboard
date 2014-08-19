@@ -1,6 +1,8 @@
 var RSVP = require('rsvp');
 var Cheerio = require('cheerio');
 
+var utils = require('./utils');
+
 var BASE_URL = 'http://baseball-reference.com';
 
 // promise -> if request returns 200 resolve the response
@@ -110,23 +112,33 @@ exports.getBoxScore = function (boxscoreUrl) {
       });
       var awayLine = lines[1].split(' ');
       var homeLine = lineScoreText.split(' ').slice(-awayLine.length);
-      var awayTeam = lineScoreText.match(/(-\s+)([a-z]\D+)(\s)/i)[2];
+      var awayTeam = lineScoreText.match(/(-\s+)([a-z]\D+)(\s)/i)[2] + ' ';
       var homeTeam = lineScoreText.match(/\D+\s/g)[1];
+      var awayRecord = C('td:nth-child(1) > div.x_large_text.bold_text').text();
+      var homeRecord = C('td:nth-child(3) > div.x_large_text.bold_text').text();
 
       var teamLinks = [];
       C('#linescore > strong > a').each(function (i) {
         teamLinks[i] = BASE_URL + C(this).attr('href');
       });
 
+      var attendance = utils.numberWithCommas(
+        C('#attendance').text().match(/\d/g).join(''));
+      var duration = C('#gametime').text().match(/\d+:\d+/g)[0];
+
       var boxScore = {
         header: header,
+        attendance: attendance,
+        duration: duration,
         away: {
           name: awayTeam,
+          record: awayRecord,
           teamLink: teamLinks[0],
           line: awayLine
         },
         home: {
           name: homeTeam,
+          record: homeRecord,
           teamLink: teamLinks[1],
           line: homeLine
         }
